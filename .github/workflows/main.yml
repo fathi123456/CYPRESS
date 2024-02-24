@@ -1,0 +1,28 @@
+name: cypress Test
+on: push
+  
+jobs:
+  cypress-run:
+    
+    runs-on: [self-hosted, windows]
+    steps:
+      # Cleaner internal action need to be the first step on your workflow as it setup a post action that will be run last!
+      - name: pre/post clean
+        uses: dktunited/.github/actions/cleaner@main
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm install
+      - name: Cypress install
+        uses: cypress-io/github-action@v6
+        with:
+          # just perform install
+          runTests: false
+      - name: Cypress info
+        run: npx cypress info
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          # we have already installed all dependencies above
+          install: false
+          # rest of your parameters
